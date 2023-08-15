@@ -55,3 +55,39 @@ SET weight_kg = weight_kg * -1
 WHERE weight_kg < 0;
 COMMIT;
 SELECT * FROM animals;
+
+
+-- Aggregates
+-- How many animals are there?
+SELECT COUNT(*) AS total_animals FROM animals;
+
+-- How many have not tried to escape
+SELECT COUNT(*) AS not_escaped FROM animals
+WHERE escape_attempts = '0';
+
+-- Average animals weight?
+SELECT AVG(weight_kg) AS avg_weight FROM animals;
+
+-- Neutered or not, who escapes the most?
+SELECT
+    neutered,
+    AVG(escape_attempts) AS avg_escapes
+    FROM animals
+GROUP BY neutered
+ORDER BY avg_escapes DESC;
+
+-- Min & max weight for each type of animal?
+SELECT
+    species,
+    MIN(weight_kg) AS min_weight_kg,
+    MAX(weight_kg) AS max_weight_kg
+    FROM animals
+GROUP BY species;
+
+-- Avg escape attempts per animal type born between 1990 & 2000?
+SELECT
+    species,
+    AVG(escape_attempts) AS avg_escapes
+    FROM animals
+WHERE date_of_birth BETWEEN '1990-01-01' AND '2000-01-01'
+GROUP BY species;
