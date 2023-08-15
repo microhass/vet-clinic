@@ -7,9 +7,51 @@ SELECT * FROM animals WHERE neutered = '1';
 SELECT * FROM animals WHERE name NOT IN ('Gabumon');
 SELECT * FROM animals WHERE weight_kg BETWEEN 10.4 AND 17.3;
 
+
+-- Unspecified species
 BEGIN;
 UPDATE animals SET species = 'unspecified';
 SELECT * FROM animals;
 ROLLBACK;
 SELECT * FROM animals;
+
+
+-- Set species
+BEGIN;
+UPDATE animals
+SET species = 'digmon'
+WHERE name LIKE '%mon';
+
+UPDATE animals
+SET species = 'pokemon'
+WHERE species = '';
+
+SELECT * FROM animals;
 COMMIT;
+
+SELECT * FROM animals;
+
+
+-- Deep breath ;)
+-- Test delete all animals
+BEGIN;
+DELETE FROM animals;
+ROLLBACK;
+SELECT * FROM animals;
+
+
+-- Weights update
+BEGIN;
+DELETE FROM animals
+WHERE date_of_birth > '2022-01-01';
+SAVEPOINT del_young_ones;
+
+UPDATE animals
+SET weight_kg = weight_kg * -1;
+ROLLBACK TO del_young_ones;
+
+UPDATE animals
+SET weight_kg = weight_kg * -1
+WHERE weight_kg < 0;
+COMMIT;
+SELECT * FROM animals;
