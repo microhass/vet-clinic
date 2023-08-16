@@ -46,3 +46,13 @@ ALTER TABLE animals ADD COLUMN owner_id INT;
 
 -- Make owner-id foreign key
 ALTER TABLE animals ADD CONSTRAINT fk_owner FOREIGN KEY(owner_id) REFERENCES owners(id);
+
+
+-- Create vets table
+CREATE TABLE vets (
+  id INT GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(100),
+  age INT,
+  date_of_graduation DATE,
+  PRIMARY KEY (id)
+);
