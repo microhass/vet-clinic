@@ -56,3 +56,63 @@ INSERT INTO vets (name, age, date_of_graduation) VALUES
     ('Stephanie Mendez', 64, '1981-05-04'),
     ('Jack Harkness', 38, '2008-06-08');
 
+
+-- Specializations data
+INSERT INTO specializations (vet_id, species_id)
+    SELECT V.id, S.id
+    FROM vets V JOIN species S
+    ON
+        (S.name = 'Pokemon' AND V.name
+            IN ('William Tatcher', 'Stephanie Mendez'))
+    OR
+        (S.name = 'Digimon' AND V.name
+            IN ('Stephanie Mendez', 'Jack Harkness'));
+
+
+-- Visits data
+INSERT INTO visits (vet_id, animal_id, visit_date)
+SELECT V.id, A.id, to_date(visit_data.visit_date, 'YYYY-MM-DD') AS visit_date
+FROM (
+    SELECT 'William Tatcher' AS vet_name, 'Agumon' AS animal_name, '2020-05-24' AS visit_date
+    UNION ALL
+    SELECT 'Stephanie Mendez', 'Agumon', '2020-06-22'
+    UNION ALL
+    SELECT 'Jack Harkness', 'Gabumon', '2021-02-02'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Pikachu', '2020-01-05'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Pikachu', '2020-05-08'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Pikachu', '2020-05-14'
+    UNION ALL
+    SELECT 'Stephanie Mendez', 'Devimon', '2021-05-04'
+    UNION ALL
+    SELECT 'Jack Harkness', 'Charmander', '2021-02-24'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Plantmon', '2019-12-21'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Plantmon', '2020-08-10'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Plantmon', '2021-04-07'
+    UNION ALL
+    SELECT 'Stephanie Mendez', 'Squirtle', '2019-09-29'
+    UNION ALL
+    SELECT 'Jack Harkness', 'Angemon', '2020-10-03'
+    UNION ALL
+    SELECT 'Jack Harkness', 'Angemon', '2020-11-04'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Boarmon', '2019-01-24'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Boarmon', '2019-05-15'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Boarmon', '2020-02-27'
+    UNION ALL
+    SELECT 'Maisy Smith', 'Boarmon', '2020-08-03'
+    UNION ALL
+    SELECT 'Stephanie Mendez', 'Blossom', '2020-05-24'
+    UNION ALL
+    SELECT 'William Tatcher', 'Blossom', '2021-01-11'
+) AS visit_data
+JOIN vets V ON V.name = visit_data.vet_name
+JOIN animals A ON A.name = visit_data.animal_name;
+
